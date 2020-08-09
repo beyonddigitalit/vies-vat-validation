@@ -1,0 +1,15 @@
+{
+    "name": "beyonddigitalit/vies-vat-validation",
+    "description": "Vat Information Exchange System, VAT number Validation.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "beyonddigitalit",
+            "email": "beyonddigitalit@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^5.3"
+    }
+}
