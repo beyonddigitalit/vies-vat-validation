@@ -4,7 +4,7 @@ namespace Beyonddigitalit\ViesVatValidation\Exceptions;
 
 use Exception;
 
-class ViesVatValidatorException extends Exception
+class ViesException extends Exception
 {
 
 }

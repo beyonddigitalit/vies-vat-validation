@@ -2,25 +2,50 @@
 
 namespace Beyonddigitalit\ViesVatValidation;
 
-use Beyonddigitalit\ViesVatValidation\Client;
+use Beyonddigitalit\ViesVatValidation\Exceptions\ViesException;
+use Beyonddigitalit\ViesVatValidation\Responses\ViesValidatorResponse;
 
 class ViesVatValidator
 {
-    protected $viesClient;
+    /**
+     * WSDL service endpoint
+     * @var String
+     */
+    protected $wsdl;
 
     /**
-     * Validate a give vat number against VIES Vat validation service
+     * Vies Validator constructor
+     * @author Bharatwaj Sriram <beyonddigitalit@gmail.com>
+     */
+    public function __construct($wsdl = null)
+    {
+        $this->wsdl = $wsdl ?: 'https://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
+    }
+
+    /**
+     * Validate a give vat number against VIES validation service
      * @author Bharatwaj Sriram <Beyonddigitalit@gmail.com>
      * @param  String $vatNumber
-     * @return [type]
      */
-    public function validate($vatNumber)
+    public function validate($vatNumber = null): ViesValidatorResponse
     {
-        if ($this->viesClient === null) {
-            $this->viesClient = new ViesClient;
+        try {
+
+            $client = new \SoapClient($this->wsdl, [
+                'classmap' => [
+                    'checkVatResponse' => ViesValidatorResponse::class
+                ],
+                'trace' => 1,
+                'exceptions' => true,
+            ]);
+
+        } catch(\SoapFault $ex) {
+            throw new ViesException('VIES Connection Error', 0, $ex);
         }
 
-        return $this->viesClient->checkVat('GB', '844281425');
+        $params = $this->splitVatNumber($vatNumber);
+
+        return $client->checkVat($params);
     }
 
     /**
@@ -28,15 +53,15 @@ class ViesVatValidator
      * the second part is the vatNumber.
      * @author Bharatwaj Sriram <Beyonddigitalit@gmail.com>
      * @param  String $vatNumber
-     * @return Array
      */
-    protected function splitVatNumber($vatNumber): Array
+    protected function splitVatNumber($vatNumber): array
     {
+        // Split the string into countrycode and vat number
         preg_match('/([A-Za-z]{2})(.*)/', $vatNumber, $matches);
 
         return [
-            'countryCode' => $matches[1],
-            'vatNumber' => $matches[2],
+            'countryCode' => $matches[1] ?? null,
+            'vatNumber' => $matches[2] ?? null,
         ];
     }
 }
