@@ -8,10 +8,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
      * Package provider.
+     * @author Bharatwaj Sriram <beyonddigitalit@gmail.com>
      * @param  \Illuminate\Foundation\Application  $app
-     * @return array
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             ViesVatValidationServiceProvider::class,

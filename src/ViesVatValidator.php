@@ -9,7 +9,7 @@ class ViesVatValidator
 {
     /**
      * WSDL service endpoint
-     * @var String
+     * @var string
      */
     protected $wsdl;
 
@@ -23,9 +23,9 @@ class ViesVatValidator
     }
 
     /**
-     * Validate a give vat number against VIES validation service
+     * Validate a given vat number against VIES validation service
      * @author Bharatwaj Sriram <Beyonddigitalit@gmail.com>
-     * @param  String $vatNumber
+     * @param  string $vatNumber
      */
     public function validate($vatNumber = null): ViesValidatorResponse
     {
@@ -52,7 +52,7 @@ class ViesVatValidator
      * Split the vatnumber into 2 parts, the first part is the countryCode and
      * the second part is the vatNumber.
      * @author Bharatwaj Sriram <Beyonddigitalit@gmail.com>
-     * @param  String $vatNumber
+     * @param  string $vatNumber
      */
     protected function splitVatNumber($vatNumber): array
     {
